@@ -9,6 +9,7 @@ import (
 	handler "github.com/pranavkv/golib_v1/BaseHandler"
 	utils "github.com/pranavkv/golib_v1/LibUtils"
 	data "github.com/pranavkv/golib_v1/LibData"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func loginHandler(w http.ResponseWriter, r *http.Request) (data.GoLibResponse, error) {
@@ -31,6 +32,7 @@ func main() {
 	utils.InitLog("login-service", hostname)
 	sm := http.NewServeMux()
 	sm.Handle("/login", handler.RootHandler(loginHandler))
+	sm.Handle("/metrics" , promhttp.Handler())
 
 	s := &http.Server{
 		Addr:         ":9091",
